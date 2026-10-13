@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Academic Advisor</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #18352d;
+        --muted: #62736b;
+        --paper: #f4f7f2;
+        --white: #ffffff;
+        --line: #d6e0d8;
+        --green: #176a52;
+        --green-dark: #10523e;
+        --lime: #d7e86a;
+        --coral: #c3523e;
+        --amber: #b37817;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Segoe UI", Tahoma, sans-serif;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem max(1.25rem, calc((100vw - 1120px) / 2));
+        background: var(--ink);
+        color: var(--white);
+      }
+
+      .brand { font-weight: 700; }
+      .program { color: #d0ddd4; font-size: 0.9rem; }
+
+      main {
+        width: min(1120px, calc(100% - 2.5rem));
+        margin: 3rem auto;
+      }
+
+      .eyebrow {
+        margin: 0 0 0.6rem;
+        color: var(--green);
+        font-size: 0.78rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      h1, h2, p { margin-top: 0; }
+      h1 { margin-bottom: 0.5rem; font-family: Georgia, serif; font-size: 2.6rem; font-weight: 500; }
+      .intro { color: var(--muted); margin-bottom: 2rem; }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+        gap: 3rem;
+        align-items: start;
+      }
+
+      .form-panel, .result-panel {
+        padding-top: 1.25rem;
+        border-top: 2px solid var(--ink);
+      }
+
+      h2 { margin-bottom: 1.25rem; font-size: 1.2rem; }
+
+      .fields {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+      }
+
+      label { display: grid; gap: 0.45rem; color: var(--muted); font-size: 0.86rem; font-weight: 650; }
+
+      input {
+        width: 100%;
+        min-height: 44px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        padding: 0.65rem 0.75rem;
+        background: var(--white);
+        color: var(--ink);
+        font: inherit;
+      }
+
+      input:focus { outline: 3px solid var(--lime); border-color: var(--green); }
+
+      button {
+        min-height: 46px;
+        margin-top: 1.4rem;
+        border: 0;
+        border-radius: 4px;
+        padding: 0.75rem 1.2rem;
+        background: var(--green);
+        color: var(--white);
+        font: inherit;
+        font-weight: 750;
+        cursor: pointer;
+      }
+
+      button:hover { background: var(--green-dark); }
+      .error { margin-top: 1rem; color: #a12e25; font-weight: 650; }
+      .risk-number { margin: 0.5rem 0 0; font-family: Georgia, serif; font-size: 3.5rem; line-height: 1; }
+      .risk-level { margin: 0.65rem 0 1.25rem; font-weight: 800; }
+      .risk-high { color: var(--coral); }
+      .risk-watch { color: var(--amber); }
+      .risk-lower { color: var(--green); }
+      .suggestions { padding-left: 1.15rem; line-height: 1.55; }
+      .suggestions li + li { margin-top: 0.65rem; }
+      .empty { color: var(--muted); }
+
+      .notice {
+        margin-top: 3rem;
+        border-left: 4px solid var(--amber);
+        padding: 0.8rem 1rem;
+        background: #fff8e9;
+        color: #5b4b2e;
+        font-size: 0.88rem;
+        line-height: 1.5;
+      }
+
+      @media (max-width: 720px) {
+        header { align-items: flex-start; flex-direction: column; }
+        main { margin: 2rem auto; }
+        h1 { font-size: 2.1rem; }
+        .workspace { grid-template-columns: 1fr; gap: 2rem; }
+      }
+
+      @media (max-width: 440px) {
+        .fields { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">Academic Advisor</div>
+      <div class="program">BSc Computer Science - Year 2</div>
+    </header>
+    <main>
+      <p class="eyebrow">Student support</p>
+      <h1>Academic standing</h1>
+      <p class="intro">A practice assessment for planning a productive semester.</p>
+
+      <div class="workspace">
+        <section class="form-panel" aria-labelledby="form-title">
+          <h2 id="form-title">Semester profile</h2>
+          <form method="post">
+            <div class="fields">
+              <label>Current GPA (0-4)
+                <input name="gpa" type="number" min="0" max="4" step="0.01" required value="{{ values.gpa }}">
+              </label>
+              <label>Attendance (%)
+                <input name="attendance_pct" type="number" min="0" max="100" step="0.1" required value="{{ values.attendance_pct }}">
+              </label>
+              <label>Study hours per week
+                <input name="weekly_study_hours" type="number" min="0" max="40" step="0.1" required value="{{ values.weekly_study_hours }}">
+              </label>
+              <label>Credits this semester
+                <input name="credits_enrolled" type="number" min="6" max="21" step="1" required value="{{ values.credits_enrolled }}">
+              </label>
+              <label>Previously failed courses
+                <input name="prior_failed_courses" type="number" min="0" max="6" step="1" required value="{{ values.prior_failed_courses }}">
+              </label>
+            </div>
+            <button type="submit">Assess semester</button>
+            {% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+          </form>
+        </section>
+
+        <section class="result-panel" aria-live="polite" aria-labelledby="result-title">
+          <h2 id="result-title">Performance outlook</h2>
+          {% if result %}
+            <p class="eyebrow">Estimated risk</p>
+            <p class="risk-number">{{ result.probability }}%</p>
+            <p class="risk-level risk-{{ result.level|lower }}">{{ result.level }} support priority</p>
+            <h2>Suggested next steps</h2>
+            <ul class="suggestions">
+              {% for suggestion in result.suggestions %}<li>{{ suggestion }}</li>{% endfor %}
+            </ul>
+          {% else %}
+            <p class="empty">No assessment yet.</p>
+          {% endif %}
+        </section>
+      </div>
+
+      <p class="notice"><strong>Class demonstration:</strong> the prediction model uses synthetic data and is not validated for real students or academic decisions. Discuss concerns with an academic advisor.</p>
+    </main>
+  </body>
+</html>
